@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player2DMovement : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class Player2DMovement : MonoBehaviour
     private bool facingRight = true;
     private Vector2 localScale;
 
-    private bool isDead = false;
+    public float speed = 2.0f;
+
+    public bool isDead = false;
+    public bool IsJumping = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,10 +39,13 @@ public class Player2DMovement : MonoBehaviour
         if (rb.velocity.y == 0)
         {
             anim.SetBool("IsJumping", false);
+            IsJumping = false;
         }
 
-        if (rb.velocity.y > 0)
+        if (rb.velocity.y > 0){
             anim.SetBool("IsJumping", true);
+            IsJumping = true;
+        }
 
         if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y == 0 && !isDead){
             anim.SetBool("IsDead", true);
@@ -54,12 +61,21 @@ public class Player2DMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (dirX==0){
+            dirX = -speed;
+        }
+
         if (Input.GetKey(KeyCode.Space) && rb.velocity.y == 0){
             anim.SetBool("IsJumping", true);
-            rb.AddForce(Vector2.up * 300f);
+            IsJumping = true;
+            rb.AddForce(Vector2.up * 500f);
         }
 
         rb.velocity = new Vector2(dirX, rb.velocity.y);
+
+        if(rb.transform.position.x < -10 || rb.transform.position.y < -10){
+            Die();
+        }
     }
 
     void LateUpdate()
@@ -75,5 +91,10 @@ public class Player2DMovement : MonoBehaviour
             localScale.x *= -1;
         
         transform.localScale = localScale;
+
+    }
+
+    void Die(){
+        Debug.Log("Game Over");
     }
 }
