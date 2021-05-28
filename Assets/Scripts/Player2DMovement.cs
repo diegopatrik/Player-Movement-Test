@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player2DMovement : MonoBehaviour
 {
@@ -73,8 +74,8 @@ public class Player2DMovement : MonoBehaviour
 
         rb.velocity = new Vector2(dirX, rb.velocity.y);
 
-        if(rb.transform.position.x < -10 || rb.transform.position.y < -10){
-            Die();
+        if(rb.transform.position.x < -15 || rb.transform.position.y < -10){
+            Invoke("Die", 0.3f);
         }
     }
 
@@ -96,5 +97,6 @@ public class Player2DMovement : MonoBehaviour
 
     void Die(){
         Debug.Log("Game Over");
+        SceneManager.LoadScene("GameOver");
     }
 }

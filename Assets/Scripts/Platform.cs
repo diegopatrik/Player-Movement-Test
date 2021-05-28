@@ -27,6 +27,7 @@ public class Platform : MonoBehaviour
         if(transform.position.x < screenBounds.x && !hasScored){
             hasScored = true;
             scoreText.text = (int.Parse(scoreText.text)+5).ToString();
+            ScoreData.playerScore = int.Parse(scoreText.text);
         }
         if(transform.position.x < screenBounds.x * 2){
             Destroy(this.gameObject);

@@ -13,9 +13,14 @@ public class GeneratePlatform : MonoBehaviour
     public Text scoreText;
     public float generateCommandTime = 10.0f;
 
+    public Button play;
+    public Button pause;
+
     // Start is called before the first frame update
     void Start()
     {
+        play.gameObject.SetActive(false);
+        pause.gameObject.SetActive(true);
         float rtime = Random.Range(1.0f, 5.0f);
 
         Invoke("spawnRock", rtime);
@@ -29,7 +34,7 @@ public class GeneratePlatform : MonoBehaviour
         a.transform.position = new Vector2(15,-0.85f);
         rockPrefab = a;
 
-        float rtime = Random.Range(5.0f, 8.0f);
+        float rtime = Random.Range(3.0f, 8.0f);
 
         Invoke("spawnRock", rtime);
     }
@@ -65,13 +70,15 @@ public class GeneratePlatform : MonoBehaviour
             scoreText.text = (int.Parse(scoreText.text)+10).ToString();
         }else{
             comandoText.color = Color.red;
-            if(int.Parse(scoreText.text) <= 10){
+            /*if(int.Parse(scoreText.text) <= 10){
                 scoreText.text = "0";
             }else{
                 scoreText.text = (int.Parse(scoreText.text)-10).ToString();
-            }
+            }*/
+            scoreText.text = "0";
             
         }
+        ScoreData.playerScore = int.Parse(scoreText.text);
         Invoke("clearText", 0.5f);
     }
 
@@ -81,12 +88,15 @@ public class GeneratePlatform : MonoBehaviour
             scoreText.text = (int.Parse(scoreText.text)+10).ToString();
         }else{
             comandoText.color = Color.red;
-            if(int.Parse(scoreText.text) <= 10){
+            /*if(int.Parse(scoreText.text) <= 10){
                 scoreText.text = "0";
             }else{
                 scoreText.text = (int.Parse(scoreText.text)-10).ToString();
-            }
+            }*/
+            scoreText.text = "0";
+
         }
+        ScoreData.playerScore = int.Parse(scoreText.text);
         Invoke("clearText", 0.5f);
     }
 
@@ -101,4 +111,19 @@ public class GeneratePlatform : MonoBehaviour
 
         Invoke("spawnPlatform", platformRespawnTime);
     }
+
+    public void PauseGame ()
+    {
+        Time.timeScale = 0;
+        play.gameObject.SetActive(true);
+        pause.gameObject.SetActive(false);
+    }
+
+    public void ResumeGame ()
+    {
+        Time.timeScale = 1;
+        play.gameObject.SetActive(false);
+        pause.gameObject.SetActive(true);
+    }
+
 }
